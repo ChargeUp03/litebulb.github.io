@@ -59,32 +59,36 @@
         if(file) reader.readAsDataURL(file);
     }
 
-    function ask() {
-        var p = document.getElementById('p');
-        var hist = document.getElementById('history');
-        var val = p.value;
-        if(!val && !currentImg) return;
+   function ask() {
+    var p = document.getElementById('p');
+    var hist = document.getElementById('history');
+    var val = p.value;
+    if(!val && !currentImg) return;
 
-        // Add user message to screen
-        hist.innerHTML += '<div class="msg user">' + (currentImg ? '[Image] ' : '') + val + '</div>';
-        p.value = "";
-        window.scrollTo(0, document.body.scrollHeight);
+    hist.innerHTML += '<div class="msg user">' + (currentImg ? '<b>[Image Attached]</b><br>' : '') + val + '</div>';
+    p.value = "";
+    window.scrollTo(0, document.body.scrollHeight);
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://script.google.com/macros/s/AKfycbyutfg_ejiM08iqAXWkhHE2W43TZq0OMuPVUmaOEB1uPQfJvV5NpHoEFg-oWNNgBi4p/exec", true);
-        xhr.setRequestHeader("Content-Type", "text/plain");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "YOUR_EXEC_URL_HERE", true);
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                hist.innerHTML += '<div class="msg ai">' + xhr.responseText + '</div>';
-                document.getElementById('status').innerText = "";
-                currentImg = null;
-                window.scrollTo(0, document.body.scrollHeight);
-            }
-        };
+    // CHANGE: We use text/plain to avoid the 405 "Pre-flight" error
+    xhr.setRequestHeader("Content-Type", "text/plain");
 
-        document.getElementById('status').innerText = "Thinking...";
-        xhr.send(JSON.stringify({prompt: val, image: currentImg}));
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            // If it worked, add AI response to chat
+            hist.innerHTML += '<div class="msg ai">' + xhr.responseText + '</div>';
+            document.getElementById('status').innerText = "";
+            currentImg = null;
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+    };
+
+    document.getElementById('status').innerText = "Thinking...";
+    // Send the JSON as a plain string
+    xhr.send(JSON.stringify({prompt: val, image: currentImg}));
+}
     }
 </script>
 
