@@ -4,7 +4,8 @@
     <title>Litebulb</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="text/plain" href="favicon.ico"> <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="text/plain" href="favicon.ico"> 
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
@@ -27,7 +28,7 @@
         /* Bottom Bar */
         #bottom { position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #ccc; padding: 10px; z-index: 10; }
         .dark #bottom { background: #121212; border-color: #444; }
-        #p { width: 70%; font-size: 16px; }
+        #p { width: 60%; font-size: 16px; }
     </style>
 </head>
 <body id="b" class="light">
@@ -55,40 +56,51 @@
     function imgTag() {
         var file = document.getElementById('img').files[0];
         var reader = new FileReader();
-        reader.onloadend = function() { currentImg = reader.result; document.getElementById('status').innerText = "Image attached."; }
+        reader.onloadend = function() { 
+            currentImg = reader.result; 
+            document.getElementById('status').innerText = "Image attached."; 
+        }
         if(file) reader.readAsDataURL(file);
     }
 
-   function ask() {
-    var p = document.getElementById('p');
-    var hist = document.getElementById('history');
-    var val = p.value;
-    if(!val && !currentImg) return;
+    function ask() {
+        var p = document.getElementById('p');
+        var hist = document.getElementById('history');
+        var val = p.value;
+        if(!val && !currentImg) return;
 
-    hist.innerHTML += '<div class="msg user">' + (currentImg ? '<b>[Image Attached]</b><br>' : '') + val + '</div>';
-    p.value = "";
-    window.scrollTo(0, document.body.scrollHeight);
+        // Add user message to screen
+        hist.innerHTML += '<div class="msg user">' + (currentImg ? '<b>[Image Attached]</b><br>' : '') + val + '</div>';
+        p.value = "";
+        window.scrollTo(0, document.body.scrollHeight);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "YOUR_EXEC_URL_HERE", true);
+        var xhr = new XMLHttpRequest();
+        
+        // --- CACHE BUSTER FOR IPOD/IOS 6 ---
+        var scriptUrl = "https://script.google.com/macros/s/AKfycbyutfg_ejiM08iqAXWkhHE2W43TZq0OMuPVUmaOEB1uPQfJvV5NpHoEFg-oWNNgBi4p/exec"; 
+        var cacheBuster = "?t=" + new Date().getTime();
+        
+        xhr.open("POST", scriptUrl + cacheBuster, true);
 
-    // CHANGE: We use text/plain to avoid the 405 "Pre-flight" error
-    xhr.setRequestHeader("Content-Type", "text/plain");
+        // Standard headers
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            // If it worked, add AI response to chat
-            hist.innerHTML += '<div class="msg ai">' + xhr.responseText + '</div>';
-            document.getElementById('status').innerText = "";
-            currentImg = null;
-            window.scrollTo(0, document.body.scrollHeight);
-        }
-    };
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                // If it worked, add AI response to chat
+                hist.innerHTML += '<div class="msg ai">' + xhr.responseText + '</div>';
+                document.getElementById('status').innerText = "";
+                currentImg = null;
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        };
 
-    document.getElementById('status').innerText = "Thinking...";
-    // Send the JSON as a plain string
-    xhr.send(JSON.stringify({prompt: val, image: currentImg}));
-}
+        document.getElementById('status').innerText = "Thinking...";
+        
+        // Wrap data in JSON string
+        var data = JSON.stringify({prompt: val, image: currentImg});
+        xhr.send(data);
     }
 </script>
 
