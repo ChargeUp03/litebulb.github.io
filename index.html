@@ -38,7 +38,7 @@
 
 <div id="bottom">
     <input type="file" id="img" accept="image/*" style="display:none" onchange="imgTag()">
-    <button onclick="document.getElementById('img').click()">Img</button>
+    <button onclick="document.getElementById('img').click()">File</button>
     <input type="text" id="p" placeholder="Type..." onkeypress="if(event.keyCode==13) ask()">
     <button onclick="ask()">Send</button>
     <div id="status" style="font-size:10px; color:gray;"></div>
@@ -69,8 +69,7 @@
         window.scrollTo(0, document.body.scrollHeight);
 
         var xhr = new XMLHttpRequest();
-        // PASTE YOUR URL BELOW
-        var scriptUrl = "https://script.google.com/macros/s/AKfycbw2S71taZIoBCwStN5jGaqH_Qm4nX4VEyr7pIKqbGXqiEkRAqs0qcyhQnxXynPV2tAv/exec"; 
+        var scriptUrl = "https://script.google.com/macros/s/AKfycbyVGI9jSGaNcOEQKqRskpcQVfc77nrHUIodfftb8ysPY2jsBkCkS7RU_6fVXcMK7z8Y/exec"; 
         var cacheBuster = "?t=" + new Date().getTime();
         
         xhr.open("POST", scriptUrl + cacheBuster, true);
