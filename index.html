@@ -12,31 +12,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     
     <style>
-var bodyEl = document.getElementById('b');
-var toggleEl = document.getElementById('darkToggle');
-
-var savedTheme = localStorage.getItem('theme');
-var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-var isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-
-if (isDark) {
-    bodyEl.className = 'dark';
-    if (toggleEl) toggleEl.checked = true;
-} else {
-    bodyEl.className = 'light';
-    if (toggleEl) toggleEl.checked = false;
-}
-
-function toggleTheme(isChecked) {
-    if (isChecked) {
-        bodyEl.className = 'dark';
-        localStorage.setItem('theme', 'dark');
-    } else {
-        bodyEl.className = 'light';
-        localStorage.setItem('theme', 'light');
-    }
-}
-
         body { font-family: sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
         .dark { background: #121212; color: #eee; }
         #head { position: fixed; top: 0; width: 100%; background: #eee; border-bottom: 1px solid #ccc; padding: 5px; font-size: 12px; z-index: 10; }
@@ -59,7 +34,7 @@ function toggleTheme(isChecked) {
 
 <div id="head">
     <b>Litebulb</b> | Gemini 3.5 Flash | 
-   <input type="checkbox" id="darkToggle" onclick="toggleTheme(this.checked)"> Dark 
+    <input type="checkbox" onclick="document.getElementById('b').className=(this.checked?'dark':'light')"> Dark
 </div>
 
 <div id="history">
