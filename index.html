@@ -3,24 +3,29 @@
 <head>
     <title>Litebulb</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+ <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
     <style>
         body { font-family: sans-serif; margin: 0; padding: 0; background: #fff; color: #000; }
         .dark { background: #121212; color: #eee; }
         #head { position: fixed; top: 0; width: 100%; background: #eee; border-bottom: 1px solid #ccc; padding: 5px; font-size: 12px; z-index: 10; }
         .dark #head { background: #222; border-color: #444; }
 
-        /* Simplified Chat Area */
         #history { padding: 45px 10px 80px 10px; font-size: 14px; line-height: 1.5; }
         .msg { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .dark .msg { border-color: #333; }
         .u-lab { font-weight: bold; color: #2196f3; }
         .a-lab { font-weight: bold; color: #4caf50; }
 
-        /* Bottom Bar Fix */
         #bottom { position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #ccc; padding: 10px; z-index: 10; white-space: nowrap; }
         .dark #bottom { background: #121212; border-color: #444; }
         
-        /* Shorter input box to fit button on same line */
         #p { width: 55%; font-size: 16px; padding: 5px; border: 1px solid #ccc; }
         button { padding: 5px 10px; font-size: 14px; }
     </style>
@@ -28,7 +33,7 @@
 <body id="b" class="light">
 
 <div id="head">
-    <b>Litebulb</b> | Gemini 3 Flash | 
+    <b>Litebulb</b> | Gemini 3.5 Flash | 
     <input type="checkbox" onclick="document.getElementById('b').className=(this.checked?'dark':'light')"> Dark
 </div>
 
@@ -63,7 +68,6 @@
         var val = p.value;
         if(!val && !currentImg) return;
 
-        // Add user text
         hist.innerHTML += '<div class="msg"><span class="u-lab">User:</span> ' + (currentImg ? '[Image] ' : '') + val + '</div>';
         p.value = "";
         window.scrollTo(0, document.body.scrollHeight);
